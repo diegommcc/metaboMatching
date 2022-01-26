@@ -18,7 +18,9 @@
 /*.Rcheck/
 
 # RStudio files
-.Rproj.user/
+.Rproj.user/*
+.Rproj.user
+metaboMatching.Rproj
 
 # produced vignettes
 vignettes/*.html
@@ -37,3 +39,9 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# documentation
+docs
+/doc/
+/Meta/
+
