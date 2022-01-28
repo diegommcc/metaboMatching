@@ -139,6 +139,7 @@ matchFeaturesSimple <- function(
               x[y, col.ref.type], " - ",
               paste(
                 round(x[y, -which(names(x[y, ]) %in% c(col.ref.common.name,
+                                                       col.ref.systematic.name,
                                                        col.ref.type))], 3),
                 collapse = " - "
               ), ")", collapse = " - ")

@@ -13,8 +13,8 @@
 #'   \item Extra columns can be included and will be ignored.} column with
 #'   experimental m/z (with adduct) and a column with unique feature names.
 #' @param reference \code{data.frame} with metabolites to be used as reference.
-#'   It must have the following columns: \itemize{ \item \code{col.ref.mz}:
-#'   charged mass (m/z) with the corresponding ion to be used \item
+#'   It must have the following columns: \itemize{ \item \code{cols.ref.mz}:
+#'   charged masses (m/z) with the corresponding ions to be used \item
 #'   \code{col.ref.common.name}: common name of metabolites (optional). \item
 #'   \code{col.ref.systematic.name}: systematic name of metabolites (optional).
 #'   \item \code{col.ref.neutral.mass}: neutral mass of metabolites (optional).
@@ -63,7 +63,7 @@ matchFeaturesComplex <- function(
     col.data.name <- which(colnames(data) == col.data.name)
   }
   # to deal with NAs in the database, we remove all the NAs for the selected col
-  reference <- reference[!is.na(reference[col.ref.mz]), ]
+  reference <- reference[!is.na(reference[cols.ref.mz]), ]
   # matching features with metabolites using m/z (vectorized)
   listRes <- lapply(
     X = cols.ref.mz,
@@ -72,12 +72,14 @@ matchFeaturesComplex <- function(
         col.ref.mz = x,
         data = data,
         reference = reference,
-        col.data.mz = col.data.mz
+        col.data.mz = col.data.mz,
+        error = error
       )
     }
   )
-  listRes <- listRes[!sapply(X = listRes, FUN = is.null)]
-  namesListRes <- cols.ref.mz[!sapply(X = listRes, FUN = is.null)]
+  filfListRes <- sapply(X = listRes, FUN = is.null)
+  listRes <- listRes[!filfListRes]
+  namesListRes <- cols.ref.mz[!filfListRes]
   ## build final matching vectorized
   resFinalList <- lapply(
     X = listRes,
@@ -103,7 +105,8 @@ matchFeaturesComplex <- function(
   data,
   reference,
   col.ref.mz,
-  col.data.mz
+  col.data.mz,
+  error
 ) {
   # matching features with metabolites using m/z
   results <- apply(
